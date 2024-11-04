@@ -1,0 +1,18 @@
+{
+  "name": "sql-employee-tracker",
+  "version": "1.0.0",
+  "description": "This project uses Inquirer and PostgreSQL to create a CMS using the command line",
+  "main": "index.js",
+  "scripts": {
+    "start": "node main.js",
+    "init-db": "psql -U postgre -d SQL_Emp_Tracker -f db/schema.sql",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^8.2.4",
+    "pg": "^8.13.1"
+  }
+}
