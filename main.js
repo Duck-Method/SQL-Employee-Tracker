@@ -50,25 +50,25 @@ async function mainMenu() {
         pool.end();
         return;
    }
-
+// return to the main menu after an action
    await mainMenu();
 }
-
+// function for viewing all departments
 async function viewAllDepartmetns() {
     const result = await pool.query("SELECT * FROM departments");
     console.table(result.rows);
 }
-
+// function for viewing all roles
 async function viewAllRoles() {
     const result = await pool.query("SELECT * FROM roles")
     console.table(result.rows);
 }
-
+// function for viewing all employees
 async function viewAllEmployees() {
     const result = await pool.query("SELECT * FROM employees")
     console.table(result.rows);
 }
-
+// function for adding a department
 async function addDepartment() {
     const { departmentName } = await inquirer.prompt([
         {
@@ -80,7 +80,7 @@ async function addDepartment() {
     await pool.query("INERT INTO departments (department_name) VALUES ($1)", [departmentName]);
     console.log(`Department "${departmentName}" added.`);
 }
-
+// funciton for adding a role
 async function addRole() {
     const { title, salary, departmentId } = await inquirer.prompt([
     {
@@ -101,7 +101,7 @@ async function addRole() {
     ]);
     await pool.query("INERT INTO roles (title, salary, departmentId) VALUES ($1, $2, $3)", [title, salary, departmentId]);
 }
-
+// function for adding an employee
 async function addEmployee() {
     const { firstName, lastName, roleId, managerId } = await inquirer.prompt([
         {
@@ -130,8 +130,8 @@ async function addEmployee() {
     );
     console.log(`Employee "${firstName} ${lastName}" added.`);
 }
-
-async function udpateEmployeeRole() {
+// function for updating an empoloyee's role
+async function updateEmployeeRole() {
     const { employeeId, newRoleId } = await inquirer.prompt([
         {
             type: "input",
@@ -148,5 +148,5 @@ async function udpateEmployeeRole() {
     console.log(`Employee ID ${employeeId} role updated.`);
 }
 
-
+// start the main menu
 mainMenu();
