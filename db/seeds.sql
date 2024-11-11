@@ -8,7 +8,7 @@ INSERT INTO roles (title, salary, department_id) VALUES
     ('Financial Analyst', 70000, 1),
     ('Chief Financial Officer', 150000, 1),
     ('Software Engineer', 100000, 2),
-    ('Software Manager', 120000,2)
+    ('Software Manager', 120000,2),
     ('Sales Representative', 60000, 3),
     ('Sales Manager', 90000, 3),
     ('Legal Counsel', 110000, 4),

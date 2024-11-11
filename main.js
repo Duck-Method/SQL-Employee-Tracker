@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import pg from "pg";
-import dbconfig from "/config/config.js";
+import dbconfig from "./config/config.js";
 
 const pool = new pg.Pool(dbconfig);
 
@@ -25,7 +25,7 @@ async function mainMenu() {
 
    switch (action) {
     case "View all departments":
-        await viewAllDepartmetns();
+        await viewAllDepartments();
         break;
     case "View all roles":
         await viewAllRoles();
@@ -42,7 +42,7 @@ async function mainMenu() {
     case "Add an employee":
         await addEmployee();
         break;
-    case "Update an employee roel":
+    case "Update an employee role":
         await updateEmployeeRole();
         break;
     case "Exit":
@@ -54,18 +54,18 @@ async function mainMenu() {
    await mainMenu();
 }
 // function for viewing all departments
-async function viewAllDepartmetns() {
-    const result = await pool.query("SELECT * FROM departments");
+async function viewAllDepartments() {
+    const result = await pool.query("SELECT id AS \"Department ID\", department_name AS \"Department Name\" FROM department");
     console.table(result.rows);
 }
 // function for viewing all roles
 async function viewAllRoles() {
-    const result = await pool.query("SELECT * FROM roles")
+    const result = await pool.query("SELECT roles.id AS \"Role ID\", roles.title AS \"Job Title\", roles.salary AS \"Salary\", department.department_name AS \"Department Name\" FROM roles JOIN department ON roles.department_id = department.id")
     console.table(result.rows);
 }
 // function for viewing all employees
 async function viewAllEmployees() {
-    const result = await pool.query("SELECT * FROM employees")
+    const result = await pool.query("SELECT employees.id AS \"Employee ID\", employees.first_name AS \"First Name\", employees.last_name AS \"Last Name\", roles.title AS \"Job Title\", department.department_name AS \"Department Name\", roles.salary AS \"Salary\", manager.first_name AS \"Manager First Name\", manager.last_name AS \"Manager Last Name\" FROM employees JOIN roles ON employees.role_id = roles.id JOIN department ON roles.department_id = department.id LEFT JOIN employees AS manager ON employees.manager_id = manager.id")
     console.table(result.rows);
 }
 // function for adding a department
@@ -77,12 +77,12 @@ async function addDepartment() {
             message: "Enter department name:"
         },
     ]);
-    await pool.query("INERT INTO departments (department_name) VALUES ($1)", [departmentName]);
+    await pool.query("INSERT INTO department (department_name) VALUES ($1)", [departmentName]);
     console.log(`Department "${departmentName}" added.`);
 }
 // funciton for adding a role
 async function addRole() {
-    const { title, salary, departmentId } = await inquirer.prompt([
+    const { title, salary, department_id } = await inquirer.prompt([
     {
         type: "input",
         name: "title",
@@ -95,40 +95,40 @@ async function addRole() {
     },
     {
         type: "input",
-        name: "departmentId",
+        name: "department_id",
         message: "Enter department ID:",
     }
     ]);
-    await pool.query("INERT INTO roles (title, salary, departmentId) VALUES ($1, $2, $3)", [title, salary, departmentId]);
+    await pool.query("INSERT INTO roles (title, salary, department_id) VALUES ($1, $2, $3)", [title, salary, department_id]);
 }
 // function for adding an employee
 async function addEmployee() {
-    const { firstName, lastName, roleId, managerId } = await inquirer.prompt([
+    const { first_name, last_name, role_id, manager_id } = await inquirer.prompt([
         {
             type: "input",
-            name: "firstNmae",
+            name: "first_name",
             message: "Enter employee's first name:",
         },
         {
             type: "input",
-            name: "lastNmae",
+            name: "last_name",
             message: "Enter employee's last name:",
         },
         {
             type: "input",
-            name: "roleId",
+            name: "role_id",
             message: "Enter role ID:",
         },
         {
             type: "input",
-            name: "managerId",
+            name: "manager_id",
             message: "Enter manager Id (or leave blank):",
         },
     ]);
-    await pool.query("INSERT INTO employees (firstnName, lastName, roleId, managerId) VALUES ($1, $2, $3, $4)",
-        [firstName, lastName, roleId, managerId || null]
+    await pool.query("INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)",
+        [first_name, last_name, role_id, manager_id || null]
     );
-    console.log(`Employee "${firstName} ${lastName}" added.`);
+    console.log(`Employee "${first_name} ${last_name}" added.`);
 }
 // function for updating an empoloyee's role
 async function updateEmployeeRole() {

@@ -6,4 +6,4 @@ const dbConfig = {
     database: 'SQL_Emp_Tracker'
   };
   
-  module.exports = dbConfig;
+  export default dbConfig;

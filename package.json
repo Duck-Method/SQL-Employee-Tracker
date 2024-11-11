@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
-    "init-db": "psql -U postgre -d SQL_Emp_Tracker -f db/schema.sql && psql -U postgres -f db/seeds.sql",
+    "init-db": "psql -U postgres -d SQL_Emp_Tracker -f db/schema.sql",
+    "seed-db": "psql -U postgres -d SQL_Emp_Tracker -f db/seeds.sql",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,5 +15,6 @@
   "dependencies": {
     "inquirer": "^8.2.4",
     "pg": "^8.13.1"
-  }
+  },
+  "type": "module"
 }
