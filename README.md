@@ -6,3 +6,4 @@ This project uses what I have learned so far in JavaScript and PosrtgreSQL to cr
 
 ## Tutorial
 This is the video to walk you through the use of the provided CLI:
+https://drive.google.com/file/d/1lbasEq7Z3hivp9HzIoK-Rwsy9C4eId8L/view?usp=sharing
